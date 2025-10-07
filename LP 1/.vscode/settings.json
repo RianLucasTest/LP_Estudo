@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "Q20.C": "cpp",
+        "math.h": "c",
+        "FUNCOES.C": "cpp"
+    }
+}

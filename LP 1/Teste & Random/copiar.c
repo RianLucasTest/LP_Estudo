@@ -1,0 +1,118 @@
+#include<stdlib.h>
+#include<stdio.h>
+#define LIN 5
+#define COL 5
+
+int main(){
+    
+    system("PAUSE");
+    return 0;
+}
+
+//ALTERAR: Nome da matriz na chamada e definição.
+//CUIDADO: Tipo de dado da matriz (scanf mais interno). Nome da variavel na chamada
+//UTILIZAR: define com 'LIN' e 'COL'
+
+void PrintMat(int[][COL], int, int);
+void PrintMat(int mat[][COL], int lin, int col){
+    int i, j;
+    printf("   ");
+    for(j = 0; j < col; j++){
+        printf("%6d",j);
+    }
+    printf("\n");
+    for(i = 0; i < lin; i++){
+        printf("%3d",i);
+        for(j = 0; j < col; j++){
+            printf("%6d", mat[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+
+//UTILIZAR: define com 'LIN' e 'COL'
+//ALTERAR: Nome da matriz na chamada e definição.
+//CUIDADO: Tipo de dado da matriz (scanf mais interno). Nome da variavel na chamada
+
+void LerMatriz(int[][COL], int, int);
+void LerMatriz(int MAT[][COL], int lin, int col){
+    for(int i = 0; i < lin; i++){
+        for(int j = 0; j < col; j++){
+            scanf("%d", &MAT[i][j]);
+        }
+    }
+}
+
+
+//Precisa do srand e time.h
+//ENTRADA: matriz, LINha, COLuna
+//LIN e COL são por 'define'
+
+void PreencheM(int[][COL], int, int);
+void PreencheM(int mat[][COL], int lin, int col){
+    for(int i = 0; i < lin; i++){
+        for(int j = 0; j < col; j++){
+            mat[i][j] = rand() % 100;
+        }
+    }
+}
+
+//BUBBLE SORT
+//Entrada: O vetor a ser organizado, quantidade de elementos(tamanho)
+void Ordena(int[], int);
+void Ordena(int vet[], int qtd_ele){
+    int i, j, temp;
+    for(i = 0; i < qtd_ele; i++){
+        for(j = 0; j < (qtd_ele-1-i); j++){
+            if(vet[j] > vet[j+1]){
+                temp =  vet[j];
+                vet[j] = vet[j+1];
+                vet[j+1] = temp;
+            }
+        }
+    }
+}
+
+//CALCULA MEDIA
+//Entrada: O vetor a ser calculado, quantidade de elementos(tamanho)
+float Media (int[], int);
+float Media(int vet[], int qtd_ele){
+    int i;
+    float soma=0;
+    for(i = 0; i < qtd_ele; i++){
+        soma += vet[i];
+    }
+    return (soma/qtd_ele);
+}
+
+//CALCULA MEDIANA 
+//Entrada: O vetor a ser calculado, quantidade de elementos(tamanho)
+float Mediana(int[], int);
+float Mediana(int vet[], int qtd_ele){
+    if(qtd_ele%2 == 0){
+        return (vet[qtd_ele/2] + vet[(qtd_ele/2)-1])/2.0;
+    }
+    else{
+        return vet[(qtd_ele-1)/2];
+    }
+}
+
+#define TAM 1
+//BUBBLE SORTE P/ STRING (ORDEM ALFABÉTICA)
+//Entrada: o vetor de strings a ser organizado, quantidade de strings, tamanho da string
+//OBS: TAM precisa ser declarado ou {void OrdemAlfa(int qtd_str, int tam_str, char vet[][tam_str])}
+void OrdemAlfa(int[][TAM], int, int);
+void OrdemAlfa(int vet[][TAM], int qtd_str, int tam_str){
+    int i, j;
+    char temp[tam_str];
+    for(i = 0; i < qtd_str; i++){
+        for(j = 0; j < (qtd_str-1-i); j++){
+            if(strcmp(vet[j], vet[j+1]) > 0){
+                strcpy(temp, vet[j]);
+                strcpy(vet[j], vet[j+1]);
+                strcpy(vet[j+1], temp);
+            }
+        }
+    }
+}
