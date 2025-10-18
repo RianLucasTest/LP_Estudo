@@ -7,6 +7,8 @@ void LerMatriz(int lin, int col, int[][col]);
 void PrintMat(int lin, int col, int[][col]);
 int Maior(int, int);
 
+//q18_mat
+
 int main(){
     int lin=LIN, col=COL;
     int i, j, mat1[lin][col], mat2[lin][col], maior[lin][col];
