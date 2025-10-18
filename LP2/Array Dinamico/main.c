@@ -18,7 +18,7 @@ int main(void){
   printf("\n=====MEDIAS DE CADA DISCIPLINA=====\n");
   for(i=0; i<DISCIPLINAS; i++){
     printf("---DISCIPLINA %d---\n"
-           "\tMedia: %.2f\n", i+1, mediaDisciplina(*(notas+i), *(tamanhos+i)));
+           "\tMedia: %.2f\n", i+1, mediaDisciplina(*(notas+i), tamanhos[i]));
   }
 
   printf("=====MEDIA GERAL DO ALUNO=====\n"
