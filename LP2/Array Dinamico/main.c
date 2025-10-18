@@ -11,7 +11,7 @@ int main(void){
   printf("=====CADASTRO DE NOTAS=====\n");
   for(i=0; i<DISCIPLINAS; i++){
     printf("---DISCIPLINA %d---\n", i+1);
-    notas[i] = leNotasDisciplina((tamanhos+i));
+    notas[i] = leNotasDisciplina(&tamanhos[i]);
     //Para cada disciplina preenche as notas 
   }
   //Para cada disciplina chama função que calcula media individual
