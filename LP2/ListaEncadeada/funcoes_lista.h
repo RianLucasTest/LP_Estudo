@@ -18,7 +18,11 @@ void insere(int, celula*);     //insere uma célula exatamente APÓS a célula p
 celula* insereRetorna(int x, celula* p); //Igual a função insere, MAS retorna ptr para o ultimo Nó adicionado
 void insereFim(int, celula*);  //insere o valor no fim da lista(apontando para NULL). Entrada: (valor, cabeça)
 void imprimeLista(celula*);    //Imprime a lista inteira. Entrada: (cabeça)
-void vetEmLista(int*, int, celula*); //Converte um vetor numa Lista Encadeada. Entrada: (vetor, tamanho de vet, cabeça)
+void vetEmLista(int*, int, celula*); //Converte um vetor numa Lista Encadeada(com cabeça). Entrada: (vetor, tamanho de vet, cabeça)
+int* listaEmVet(int*, celula*);   //Converte uma Lista Encadeada em Vetor. Entrada:(ptr para tam,cabeça). Retorna vetor preenchido, tam modificado internamente
+celula* buscaValor(int x, celula* p);  //Busca por valor. Entrada: (valor a ser encontrado, cabeca). Retorna ptr para celula que contem o valor
+celula* buscaEndereco(celula* find, celula* p);  //Busca celula que aponta para endereco inserido e retorna ele. Entrada(celula a procurar, cabeca) NESSA ORDEM
+void removeNo(int x, celula* p);   //Remove o no referente ao valor inserido. Entrada(valor a ser retirado, cabeca)
 
 
 /*=======FUNÇÕES LISTA SEM CABEÇA=====================

@@ -36,3 +36,11 @@ int* preencheVet(int* tam){
     printf("Qantidade total de itens inseridos: %d\n", i);
     return vetor;
 }
+
+void printVet(int* vet, int tam){
+    printf("=====VETOR=====\n");
+    for(int i=0; i<tam; i++){
+        printf("vetor[%d]: %d\n", i, *(vet+i));
+    }
+    printf("======FIM DO VETOR=====\n");
+}

@@ -3,21 +3,19 @@
 #include"funcoes.h"
 #include"funcoes_lista.h"
 
-void wait(void);
-
 int main(void){
-    int tam=0;
-    int* vetor = preencheVet(&tam);
     celula* cabeca=malloc(sizeof(celula));
     cabeca->prox = NULL;
 
-    vetEmLista(vetor, tam, cabeca);
+    for(int i=0; i<6; i++){
+        insereFim((i*10), cabeca);
+    }
     imprimeLista(cabeca);
+    printf("\n\nEndereco do 30: %p\n\n", buscaValor(30, cabeca));
 
-    free(vetor);
-    vetor=NULL;
+
+
     liberaLista(cabeca);
     free(cabeca);
-    cabeca=NULL;
     return 0;
 }
