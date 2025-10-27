@@ -20,6 +20,15 @@ void insere(int x, celula* p){
     p->prox = nova;
 }
 
+celula* insereRetorna(int x, celula* p){
+    celula* nova=malloc(sizeof(celula));
+    nova->valor = x;
+    nova->prox = p->prox;
+    p->prox = nova;
+
+    return nova;
+}
+
 void insereFim(int x, celula* p){
     celula* nova = malloc(sizeof(celula));
     nova->valor = x;
@@ -40,4 +49,14 @@ void imprimeLista(celula* p){
     }
 
     printf("=====FIM DA LISTA=====\n");
+}
+
+void vetEmLista(int* vetor, int tam, celula* head){
+    int i;
+    celula* temp=head;
+
+    for(i = 0; i < tam; i++){
+        temp = insereRetorna(*(vetor+i), temp);
+    }
+
 }

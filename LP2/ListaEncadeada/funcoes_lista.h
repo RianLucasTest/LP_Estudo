@@ -15,8 +15,10 @@ typedef struct Celula{
 */
 void liberaLista(celula*);     //libera a lista inteira após a cabeça. NÃO libera a cabeça. Entrada: (cabeça). Fazer cabeca->prox=NULL para reutilizar ou free(cabeça) 
 void insere(int, celula*);     //insere uma célula exatamente APÓS a célula passada como parâmetro. Entrada: (valor_add, celula_anterior);
+celula* insereRetorna(int x, celula* p); //Igual a função insere, MAS retorna ptr para o ultimo Nó adicionado
 void insereFim(int, celula*);  //insere o valor no fim da lista(apontando para NULL). Entrada: (valor, cabeça)
 void imprimeLista(celula*);    //Imprime a lista inteira. Entrada: (cabeça)
+void vetEmLista(int*, int, celula*); //Converte um vetor numa Lista Encadeada. Entrada: (vetor, tamanho de vet, cabeça)
 
 
 /*=======FUNÇÕES LISTA SEM CABEÇA=====================
