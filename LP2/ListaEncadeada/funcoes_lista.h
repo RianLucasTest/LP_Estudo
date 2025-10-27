@@ -23,6 +23,7 @@ int* listaEmVet(int*, celula*);   //Converte uma Lista Encadeada em Vetor. Entra
 celula* buscaValor(int x, celula* p);  //Busca por valor. Entrada: (valor a ser encontrado, cabeca). Retorna ptr para celula que contem o valor
 celula* buscaEndereco(celula* find, celula* p);  //Busca celula que aponta para endereco inserido e retorna ele. Entrada(celula a procurar, cabeca) NESSA ORDEM
 void removeNo(int x, celula* p);   //Remove o no referente ao valor inserido. Entrada(valor a ser retirado, cabeca)
+void insereOrdenado(int, celula*);  //Insere Nó em ordem crescente(ou decrescente). Entrada: (valor, cabeca)
 
 
 /*=======FUNÇÕES LISTA SEM CABEÇA=====================

@@ -45,7 +45,7 @@ void imprimeLista(celula* p){
     printf("======INICIO DA LISTA=====\n");
 
     for(i=0, p=p->prox ; p != NULL; i++, p = p->prox){
-        printf("Lista[%d]: %d\tEndereco da celula: %p\n", i, p->valor, p);
+        printf("Lista[%d]: %d\n", i, p->valor);
     }
 
     printf("=====FIM DA LISTA=====\n");
@@ -61,7 +61,7 @@ void vetEmLista(int* vetor, int tam, celula* head){
 
 }
 
-int* listaEmVet(int* tam, celula* p){
+int* listaEmVet(int* tam, celula* p){ //A TRABALHAR
     int* vetor = malloc(sizeof(int));
     if(vetor == NULL){
         printf("Erro na alocacao de memoria.\nCódigo encerradO!\n");
@@ -72,9 +72,6 @@ int* listaEmVet(int* tam, celula* p){
     
     while(1){
         p=p->prox;
-        *(vetor+i) = p->valor;
-        i++; //incrementa quantidade de elementos do vetor
-
         if(p->prox == NULL){
             break;
         }
@@ -86,6 +83,11 @@ int* listaEmVet(int* tam, celula* p){
             return NULL;
         }
         vetor = temp;
+
+        *(vetor+i) = p->valor;
+        i++; //incrementa quantidade de elementos do vetor
+
+        
     }
     *tam = i;
     printf("Qantidade total de itens inseridos: %d\n", i);
@@ -122,16 +124,30 @@ celula* buscaEndereco(celula* find, celula* p){
 }
 
 void removeNo(int x, celula* p){
-    celula* deletar=NULL;
     celula* ant = NULL;
     while(p->prox!=NULL){
         ant=p; //recebe no anterior
-        p=p->prox;  //recebe no atual
-        if(p->valor == x){
-            ant->prox = p->prox;
-            free(p);
+        p=p->prox;  //recebe no atual(o que talvez será removido)
+        if(p->valor == x){ //compara se é o no a ser removido
+            ant->prox = p->prox; //link da celula anterior com a proxima da removida
+            free(p);  //remove
             return;
         }
     }
     printf("No a ser removido nao encontrado!\n");
+}
+
+void insereOrdenado(int x, celula* p){
+    celula* nova = malloc(sizeof(celula));
+    celula* ant=p;
+    nova->valor = x;
+    p=p->prox;  //ignora a cabeca(valor lixo)
+    
+    while(p != NULL && x > p->valor){
+        ant=p;
+        p=p->prox;
+    }
+    nova->prox = ant->prox;
+    ant->prox = nova;
+
 }

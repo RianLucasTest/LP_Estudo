@@ -11,8 +11,12 @@ int main(void){
         insereFim((i*10), cabeca);
     }
     imprimeLista(cabeca);
-    printf("\n\nEndereco do 30: %p\n\n", buscaValor(30, cabeca));
 
+    insereOrdenado(35, cabeca);
+    insereOrdenado(5, cabeca);
+    insereOrdenado(78, cabeca);
+
+    imprimeLista(cabeca);
 
 
     liberaLista(cabeca);
