@@ -6,12 +6,18 @@
 typedef void(*notificar)(const char*); //tipo 'notificar' é uma função void que recebe char*.
 
 int qtd_alertas=0;
-notificar alertas[MAX_NOTI];
+personalizar alertas[MAX_NOTI];
+
+typedef struct personalizar{
+    int option;
+    notificar funcao; //ainda em teste
+} personalizar;
 
 /*
 Por enquanto os alertas estão sendo enviados para todos
 Ainda estou pensando numa maneira de especificar(ex: "Olá 'fulano de tal'. Temos uma novidade...")
 para emails personalizados
+Podemos fazer algo como: "Deseja receber emails?"
 */
 
 //FUNCOES DE ALERTA___________________________
@@ -137,7 +143,8 @@ void alerta_cel(const char* msg){
     printf("Mensagem automatica enviada para todos os cadastrados\n%s\n", msg);
 }
 void registrar_alerta(notificar reg){
-    alertas[qtd_alertas++] = reg;
+    personalizar regis={.option=0, .funcao = reg};
+    alertas[qtd_alertas++] = regis;
 }
 void notificar_all(notificar* vet, const char* msg){
     for(int i=0; i<qtd_alertas; i++){
