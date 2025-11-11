@@ -39,10 +39,9 @@ typedef struct Toferta{
 
 //Função para executar e controlar o menu de vendas
 //Parâmetro de entrada: ptr para cabeça da lista(preferencial criar no main)
-void vendasMenu(Toferta* cabeca);
-
+void vendasMenu(Toferta*);
 void registrar_oferta(Toferta*);  //parametros:  ptr para cabeca
-void registrar_oferta_teste(Toferta* head, char* nome, int qtd, float valor, char* vendedor);
+void registrar_oferta_teste(Toferta*, char*, int, float, char*);
 void excluir_oferta_teste(Toferta*, const char*);   //parametros:  ptr para cabeca / nome do prod a ser excluido
 void excluir_oferta(Toferta*);
 void lista_ofertas(Toferta*);  //imprime todas as ofertas
