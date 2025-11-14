@@ -151,3 +151,23 @@ void insereOrdenado(int x, celula* p){
     ant->prox = nova;
 
 }
+
+void bubbleLista(int tam, celula* head){
+    celula* p1=NULL;
+    celula* p2=NULL;
+    int temp;
+
+    for(int i=0; i<tam-1; i++){
+        p1=head->prox;
+        p2=p1->prox;
+
+        for( ; p2!=NULL; p1=p1->prox, p2=p2->prox){
+
+            if(p1->valor > p2->valor){
+                temp = p1->valor;
+                p1->valor = p2->valor;
+                p2->valor = temp;
+            }
+        }
+    }
+}
