@@ -1,67 +1,41 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include"fun_arq.h"
 
-#define ARQ "produtos.dat"
-#define ARQ_IND "indices.txt"
 
-int qtdProdutos=0;
-typedef struct{
-    int id;
-    char nome[50];
-    float preco;
-    int quantidade;
-} Tproduto;
 
-Tproduto* cadastrarProduto(Tproduto produto[]);
-void listarProdutos(Tproduto produtos[]);
-void grava_vet(Tproduto*);
-Tproduto* resgata_vet(void);
-
-int main(void){
-    Tproduto* vetor = NULL;
-    //vetor = cadastrarProduto(vetor);
-
-    vetor = resgata_vet();
-    listarProdutos(vetor);
-
-   //grava_vet(vetor);
-
-    free(vetor);
-    return 0;
-}
-
-void grava_vet(Tproduto* vet){
-    FILE* f_prod=fopen(ARQ, "wb");
-    if(f_prod==NULL){
-        printf("ERRO ao salvar dados em arquivo!\n");
-        return;
-    }
-
-    FILE* f_ind = fopen(ARQ_IND, "w");
-    if(f_ind==NULL){
-        printf("ERRO ao salvar dados em arquivo!\n");
-        return;
-    }
+void grava_vet(Tproduto* vet, const char* arq){
     
+    FILE* f_prod=fopen(arq, "wb");
+    if(f_prod==NULL){
+        printf("ERRO ao gravar arquivo binário!\n");
+        return;
+    }
+
     for(int i=0; i<qtdProdutos; i++){
         fwrite((vet+i), sizeof(Tproduto), 1, f_prod);
-        fprintf(f_ind, "%d\n%s\n", (vet+i)->id, (vet+i)->nome);
     }
-
+    
     fclose(f_prod);
-    fclose(f_ind);
-
 }
 
-Tproduto* resgata_vet(void){
+Tproduto* resgata_vet(const char* arq){
     Tproduto* vet = NULL;
     int i=0;
     Tproduto aux;
 
-    FILE* f_prod=fopen(ARQ, "rb");
+    FILE* f_prod=fopen(arq, "ab");  //abre e fecha arquivo com apend
     if(f_prod==NULL){
-        printf("ERRO ao salvar dados em arquivo!\n");
+        printf("ERRO ao abrir/criar arquivo binário!\n");
+        return NULL;
+    }
+    fclose(f_prod);  //garante que o arquivo sempre exista
+
+
+    f_prod=fopen(arq, "rb");
+    if(f_prod==NULL){
+        printf("ERRO ao gravar arquivo binário!\n");
         return NULL;
     }
 
@@ -69,7 +43,7 @@ Tproduto* resgata_vet(void){
 
         Tproduto* temp = realloc(vet, (qtdProdutos+1)*sizeof(Tproduto));
         if(temp == NULL){
-            printf("EEro ao alocar memoria\n");
+            printf("Erro ao alocar memoria\n");
             free(vet);
             fclose(f_prod);
             return NULL;
@@ -79,19 +53,11 @@ Tproduto* resgata_vet(void){
         *(vet+i) = aux;
         qtdProdutos++;
         i++; 
-
     }
+    
     fclose(f_prod);
     return vet;
 }
-
-
-
-
-
-
-
-
 
 Tproduto* cadastrarProduto(Tproduto* produtos)
 {   char nome_temp[50];
@@ -152,4 +118,3 @@ void listarProdutos(Tproduto produtos[]){
     }
 }
 
-//
