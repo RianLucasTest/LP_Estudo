@@ -4,58 +4,59 @@
 #include"fun_arq.h"
 
 
-
-void grava_vet(Tproduto* vet, const char* arq){
+//recebe vetor a ser gravado + o nome do arquivo a ser aberto + ptr para variável de tamanho do vetor
+//Devolve o vetor resgatado do arquivo
+void grava_vet(Tproduto* vet, const char* arq, int* tam){
     
-    FILE* f_prod=fopen(arq, "wb");
-    if(f_prod==NULL){
+    FILE* file=fopen(arq, "wb");
+    if(file==NULL){
         printf("ERRO ao gravar arquivo binário!\n");
         return;
     }
 
-    for(int i=0; i<qtdProdutos; i++){
-        fwrite((vet+i), sizeof(Tproduto), 1, f_prod);
+    for(int i=0; i<(*tam); i++){
+        fwrite((vet+i), sizeof(Tproduto), 1, file);
     }
     
-    fclose(f_prod);
+    fclose(file);
 }
 
-Tproduto* resgata_vet(const char* arq){
+//recebe o nome do arquivo a ser aberto + ponteiro para variável de tamanho do vetor
+//Devolve o vetor resgatado do arquivo
+Tproduto* resgata_vet(const char* arq, int* tam){
     Tproduto* vet = NULL;
-    int i=0;
     Tproduto aux;
 
-    FILE* f_prod=fopen(arq, "ab");  //abre e fecha arquivo com apend
-    if(f_prod==NULL){
+    FILE* file=fopen(arq, "ab");  //abre e fecha arquivo com apend
+    if(file==NULL){
         printf("ERRO ao abrir/criar arquivo binário!\n");
         return NULL;
     }
-    fclose(f_prod);  //garante que o arquivo sempre exista
+    fclose(file);  //garante que o arquivo sempre exista
 
 
-    f_prod=fopen(arq, "rb");
-    if(f_prod==NULL){
+    file=fopen(arq, "rb");
+    if(file==NULL){
         printf("ERRO ao gravar arquivo binário!\n");
         return NULL;
     }
 
-    while(fread(&aux, sizeof(Tproduto), 1, f_prod)){
+    while(fread(&aux, sizeof(Tproduto), 1, file)){
 
-        Tproduto* temp = realloc(vet, (qtdProdutos+1)*sizeof(Tproduto));
+        Tproduto* temp = realloc(vet, ((*tam)+1)*sizeof(Tproduto));
         if(temp == NULL){
             printf("Erro ao alocar memoria\n");
             free(vet);
-            fclose(f_prod);
+            fclose(file);
             return NULL;
         }
         vet = temp;
 
-        *(vet+i) = aux;
-        qtdProdutos++;
-        i++; 
+        *(vet+(*tam)) = aux;
+        (*tam)++;
     }
     
-    fclose(f_prod);
+    fclose(file);
     return vet;
 }
 
