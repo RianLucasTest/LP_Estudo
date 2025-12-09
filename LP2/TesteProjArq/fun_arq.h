@@ -13,12 +13,11 @@ extern int qtdProdutos;
 Tproduto* cadastrarProduto(Tproduto produto[]);
 void listarProdutos(Tproduto produtos[]);
 
-//recebe vetor a ser gravado + o nome do arquivo a ser aberto + ptr para variável de tamanho do vetor
-//Devolve o vetor resgatado do arquivo
-void grava_vet(Tproduto*, const char*, int*); 
+//entrada: ptr void para o vetor, nome do arq a ser aberto, tamanho de cada elemento, tamanho do vetor
+void grava_vet(void*, const char*, int, int*);
 
-//recebe o nome do arquivo a ser aberto + ponteiro para variável de tamanho do vetor
+//entrada: nome do arq a ser aberto, tamanho de cada elemento, tamanho do vetor
 //Devolve o vetor resgatado do arquivo
-Tproduto* resgata_vet(const char*, int*);
+void* resgata_vet(const char*, int, int*);
 
 #endif

@@ -4,9 +4,8 @@
 #include"fun_arq.h"
 
 
-//recebe vetor a ser gravado + o nome do arquivo a ser aberto + ptr para variável de tamanho do vetor
-//Devolve o vetor resgatado do arquivo
-void grava_vet(Tproduto* vet, const char* arq, int* tam){
+//entrada: ptr void para o vetor, nome do arq a ser aberto, tamanho de cada elemento, tamanho do vetor
+void grava_vet(void* vet, const char* arq, int size_elem, int* tam){
     
     FILE* file=fopen(arq, "wb");
     if(file==NULL){
@@ -14,18 +13,17 @@ void grava_vet(Tproduto* vet, const char* arq, int* tam){
         return;
     }
 
-    for(int i=0; i<(*tam); i++){
-        fwrite((vet+i), sizeof(Tproduto), 1, file);
-    }
+    fwrite(vet, size_elem, (*tam), file);
+    
     
     fclose(file);
 }
 
-//recebe o nome do arquivo a ser aberto + ponteiro para variável de tamanho do vetor
+//entrada: nome do arq a ser aberto, tamanho de cada elemento, tamanho do vetor
 //Devolve o vetor resgatado do arquivo
-Tproduto* resgata_vet(const char* arq, int* tam){
-    Tproduto* vet = NULL;
-    Tproduto aux;
+void* resgata_vet(const char* arq, int size_elem, int* tam){
+    void* vet = NULL;
+    //Tproduto aux;
 
     FILE* file=fopen(arq, "ab");  //abre e fecha arquivo com apend
     if(file==NULL){
@@ -41,9 +39,14 @@ Tproduto* resgata_vet(const char* arq, int* tam){
         return NULL;
     }
 
-    while(fread(&aux, sizeof(Tproduto), 1, file)){
+    while(1){
+        char aux[size_elem];
 
-        Tproduto* temp = realloc(vet, ((*tam)+1)*sizeof(Tproduto));
+        
+        //casting para algo que tem 1 byte para usar aritmética
+        if(fread(aux, size_elem, 1, file) != 1) break;
+
+        void* temp = realloc(vet, ((*tam)+1)*size_elem);
         if(temp == NULL){
             printf("Erro ao alocar memoria\n");
             free(vet);
@@ -52,7 +55,10 @@ Tproduto* resgata_vet(const char* arq, int* tam){
         }
         vet = temp;
 
-        *(vet+(*tam)) = aux;
+        for(int i=0; i<size_elem; i++){
+            ((char*)vet)[*tam * size_elem + i] = aux[i];
+        }
+
         (*tam)++;
     }
     
