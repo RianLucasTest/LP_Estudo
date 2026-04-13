@@ -2,9 +2,9 @@ from vendas import *
 from winotify import Notification, audio
 
 toast = Notification(app_id="Python",
-                     title="Alerta!",
-                     msg="Bobão",
-                     duration="long")
+                     title="Venda!",
+                     msg="Venda completa adicionada!!",
+                     duration="short")
 toast.show()
 toast.set_audio(audio.Default, loop=True)
 

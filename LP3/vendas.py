@@ -1,3 +1,16 @@
+
+class Cor:
+    padrao = "\033[0m" #Padrão
+    ciano = "\033[36m" #Ciano
+    azul = "\033[34m" #Azul
+    azul_neg = "\033[1;34m" #Azul Negrito
+    verde = "\033[32m" #Verde
+    amarelo = "\033[33m" #Amarelo
+    vermelho = "\033[31m" #Vermelho
+    red_neg="\033[1;31m" #Vermelho Negrito
+    negrito="\033[1m" #Negrito
+
+
 class Venda:
     def __init__(self, num):
         self.num = num
@@ -23,12 +36,16 @@ class Venda:
     def print_venda(self):
         print(f"Venda n° {self.num}")
         print("="*69)
-        print("|Produto\t|Valor Unitário\t|Código\t|Quantidade\t|Subtotal")
+        print("|" + Cor.amarelo + "Produto\t" + Cor.padrao+
+              "|" + Cor.amarelo + "Valor Unitário\t" + Cor.padrao+
+              "|" + Cor.amarelo + "Código\t" + Cor.padrao+
+              "|" + Cor.amarelo + "Quantidade\t" + Cor.padrao+
+              "|" + Cor.amarelo + "Subtotal" + Cor.padrao)
 
         for item in self.itens:
-            print(f"{item.printItem()}\t|{item.subtotal()}")
+            print(f"{item.printItem()}\t\t|"+Cor.verde+f"{item.subtotal()}"+Cor.padrao)
 
-        print("\033[1m"+f"TOTAL: {self.calc_total()}"+"\033[0m")
+        print(Cor.azul_neg+f"TOTAL: {self.calc_total()}"+Cor.padrao)
         print("="*69)
 
 class Produto:
@@ -55,7 +72,7 @@ class Item:
         self.qtd = qtd
 
     def printItem(self):
-        return (f"{self.produto.printProd()}\t\t|{self.qtd}")
+        return (f"{self.produto.printProd()}\t|{self.qtd}")
 
     def subtotal(self):
         return (self.qtd * self.produto.preco)
@@ -65,6 +82,7 @@ class Item:
             print("Quantidade inválida")
         else: 
             self.qtd = new_qtd
+
 
 def criaItem(nome, preco, codigo, qtd):
     prod = Produto(nome, preco, codigo)
