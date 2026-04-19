@@ -46,11 +46,11 @@ class Venda:
         print("="*40)
 
 class Produto:
-    def __init__(self, nome, preco, codigo):
+    def __init__(self, nome, preco, codigo, estoque=0):
         self.nome = nome
         self.preco = preco
         self.codigo = codigo
-        self.estoque = 0
+        self.estoque = estoque
 
     def printProd(self):
         return(f"|Produto: {self.nome:<10}Preço: {self.preco}\n"+
@@ -70,8 +70,7 @@ class Produto:
             self.estoque = new_estoque
         else: 
             print("Erro! Estoque novo inválido!")
-    
-
+ 
 class Item:
     def __init__(self, produto, qtd):
         self.produto = produto
@@ -98,3 +97,11 @@ class Item:
         else: 
             self.qtd = new_qtd
 
+
+def cadastraProd():
+    nome = input("Insira o nome do Produto: ")
+    preco = float(input("Insira o preço do produto: "))
+    codigo = int(input("Insira o código do produto: "))
+    estoqueIni = int(input("Insira o estoque inicial: "))
+
+    return Produto(nome, preco, codigo, estoqueIni)
