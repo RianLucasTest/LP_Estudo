@@ -1,29 +1,87 @@
 from vendas import *
-from winotify import Notification, audio
 
-toast = Notification(app_id="Python",
-                     title="Venda!",
-                     msg="Venda completa adicionada!!",
-                     duration="short")
-toast.show()
-toast.set_audio(audio.Default, loop=True)
-
-def main():
-    item1 = criaItem("Maçã", 3.5, 1001, 10)
-    item2 = criaItem("Banana", 9.2, 1002, 5)
-    item3 = criaItem("Frango", 6, 1003, 3)
+def iniTeste():
     venda1=Venda(1)
 
-    venda1.inserir_item(item1)
-    venda1.inserir_item(item2)
-    venda1.inserir_item(item3)
+    prod1 = Produto("Arroz", 8.9, 1)
+    prod2 = Produto("Feijão", 9.7, 2)
+    prod3 = Produto("Açúcar", 5.6, 3)
+    prod4 = Produto("Maçã", 2.3, 4)
+
+    produtos = [prod1, prod2, prod3, prod4]
+
+    i=35
+    for prods in produtos:
+        prods.novoEstoque(i)
+        i = i+10
+
+    for prods in produtos:
+        print(prods.printProd())
+    print("")
+    
+    venda1.inserir_item(Item(prod1, 8))
+    venda1.inserir_item(Item(prod2, 10))
+    venda1.inserir_item(Item(prod3, 22))
+    venda1.inserir_item(Item(prod4, 30))
 
     venda1.print_venda()
 
-    venda1.excluir_item(item2.produto.codigo)
+    return produtos, venda1
 
-    venda1.print_venda()
 
-    #item1.printItem()
+def main():
+    produtos, venda1 = iniTeste()
+
+    while True:
+
+        print("="*20 + "MENU" + "="*20)
+        print("1- Listar Produtos",
+              "2- Listar Venda",
+              "3- Adicionar Item",
+              "4- Remover Item",
+              "5- Encerrar venda", sep="\n")
+        print("="*44)
+        
+        opcao = input("  Selecione a sua opção: ")
+        print()
+        
+        match opcao:
+            case "1":
+                print("=============Produtos============")
+                for prod in produtos:
+                    print("-"*40)
+                    print(prod.printProd())
+                print("=================================")
+                
+            case "2":
+                venda1.print_venda()
+
+            case "3":
+                prodAdd = int(input("Insira o codigo do produto: "))
+                
+                for prod in produtos:
+                    qtdAdd = int(input("Insira a quantidade do produto: "))
+                    if prodAdd == prod.codigo:
+                        venda1.inserir_item(Item(prod, qtdAdd))
+                        break
+                else:
+                    print("Produto não encontrado no estoque!")
+                
+            case "4":
+                codigoRemove = int(input("Insira o código do produto a ser removido: "))
+                for item in venda1.itens:
+                    if codigoRemove == item.produto.codigo:
+                        venda1.excluir_item(codigoRemove)
+                        break
+                else:
+                    print("Produto não encontrado na venda!")
+
+            case "5":
+                print("Encerrando programa!")
+                break
+
+            case _:
+                print("Opção inválida!")
+
 
 main()
