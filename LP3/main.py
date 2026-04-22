@@ -1,28 +1,28 @@
 from vendas import *
 
-def iniTeste():
+def iniTeste(logs):
     venda1=Venda(1)
 
-    prod1 = Produto("Arroz", 8.9, 1)
-    prod2 = Produto("Feijão", 9.7, 2)
-    prod3 = Produto("Açúcar", 5.6, 3)
-    prod4 = Produto("Maçã", 2.3, 4)
+    prod1 = Produto("Arroz", 8.9, 1, 30)
+    prod2 = Produto("Feijão", 9.7, 2, 30)
+    prod3 = Produto("Açúcar", 5.6, 3, 20)
+    prod4 = Produto("Maçã", 2.3, 4, 20)
 
     produtos = [prod1, prod2, prod3, prod4]
 
-    i=35
+    i=65
     for prods in produtos:
         prods.novoEstoque(i)
-        i = i+10
+        i = i-10
 
     for prods in produtos:
         print(prods.printProd())
     print("")
     
-    venda1.inserir_item(Item(prod1, 8))
-    venda1.inserir_item(Item(prod2, 10))
-    venda1.inserir_item(Item(prod3, 22))
-    venda1.inserir_item(Item(prod4, 30))
+    venda1.inserir_item(Item(prod1, 38), logs)
+    venda1.inserir_item(Item(prod2, 23), logs)
+    venda1.inserir_item(Item(prod3, 22), logs)
+    venda1.inserir_item(Item(prod4, 30), logs)
 
     venda1.print_venda()
 
@@ -48,6 +48,7 @@ def menuVendedor(produtos):
                 for prod in produtos:
                     print("-"*40)
                     print(prod.printProd())
+                    print(f"|Estoque ideal: {prod.estqIdeal}")
                 print("=================================")
 
             case "2":
@@ -68,7 +69,8 @@ def menuVendedor(produtos):
                 for prod in produtos:
                     print("-"*30)
                     print(f"|Produto: {prod.nome}\n|Estoque: {prod.estoque}")
-                    print
+                    print(f"|Estoque ideal: {prod.estqIdeal}")
+                    print(prod.verifEstoque())
                 print("=================================")
                 
             case "5":
@@ -76,13 +78,12 @@ def menuVendedor(produtos):
 
                 for prod in produtos:
                     if prodAlter == prod.codigo:
-                        novoEstq = int(input("Insira o novo estoque"))
+                        novoEstq = int(input("Insira o novo estoque: "))
                         prod.novoEstoque(novoEstq)
                         break
                 else:
                     print("Código de produto inválido!")
                     
-
             case "6":
                 print("Encerrando Menu do Vendedor!")
                 return
@@ -91,9 +92,9 @@ def menuVendedor(produtos):
                 print("Opção inválida!")
         print()
 
-
 def main():
-    produtos, venda1 = iniTeste()
+    logs=[]
+    produtos, venda1 = iniTeste(logs)
 
     while True:
 
@@ -103,7 +104,8 @@ def main():
               "3- Adicionar Item",
               "4- Remover Item",
               "5- Menu de Vendedor",
-              "6- Encerrar venda", sep="\n")
+              "6- Imprimir relatório",
+              "7- Encerrar venda", sep="\n")
         print("="*44)
         
         opcao = input("  Selecione a sua opção: ")
@@ -127,7 +129,7 @@ def main():
 
                     if codigoAdd == prod.codigo:
                         qtdAdd = int(input("Insira a quantidade do produto: "))
-                        venda1.inserir_item(Item(prod, qtdAdd))
+                        venda1.inserir_item(Item(prod, qtdAdd), logs)
                         break
                 else:
                     print("Produto não encontrado no estoque!")
@@ -137,7 +139,7 @@ def main():
 
                 for item in venda1.itens:
                     if codigoRemove == item.produto.codigo:
-                        venda1.excluir_item(codigoRemove)
+                        venda1.excluir_item(codigoRemove, logs)
                         break
                 else:
                     print("Produto não encontrado na venda!")
@@ -146,6 +148,10 @@ def main():
                 menuVendedor(produtos)
 
             case "6":
+                addLog(f"Valor total da venda {venda1.num}: {venda1.calc_total()}", logs)
+                relatorio(logs)
+
+            case "7":
                 print("Encerrando programa!")
                 break
 
