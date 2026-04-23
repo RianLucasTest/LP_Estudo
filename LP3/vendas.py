@@ -10,10 +10,15 @@ class Cor:
     negrito="\033[1m" #Negrito
 
 def relatorio(logs):
+    
+    print("="*16 + "RELATÓRIO" + "="*15)
     for msg in logs:
         print(f"|{msg}")
+    print("="*44)
 
 def addLog(msg, logs):
+    if msg == "":
+        return
     logs.append(msg)
 
 def clearLog(logs):
@@ -27,12 +32,18 @@ class Venda:
     def inserir_item(self, item, logs):
         self.itens.append(item)
         addLog(f"Item {item.produto.nome} adicionado à venda {self.num}", logs)
+        addLog(item.produto.verifEstoque(), logs)
 
     def excluir_item(self, codigo, logs):
         for item in self.itens:
+
             if item.produto.codigo == codigo:
+
+                item.produto.novoEstoque(item.produto.estoque + item.qtd)
                 self.itens.remove(item)
                 addLog(f"Item {item.produto.nome} removido da venda {self.num}", logs)
+                addLog(item.produto.verifEstoque(), logs)
+                
                 return
 
         print("ERRO: Item não existe na venda")
@@ -54,7 +65,7 @@ class Venda:
             print("-"*30)
 
         print(Cor.azul_neg+f"TOTAL: {self.calc_total()}"+Cor.padrao)
-        print("="*40)
+        print(Cor.ciano+"="*40+Cor.padrao)
 
 class Produto:
     def __init__(self, nome, preco, codigo, estqIdeal, estoque=0):
@@ -66,7 +77,7 @@ class Produto:
 
     def printProd(self):
         return(f"|Produto: {self.nome:<10}Preço: {self.preco}\n"+
-               f"|Código: {self.codigo:<12}Estoque Atual: {self.estoque}")
+               f"|Código: {self.codigo:<11}Estoque Atual: {self.estoque}")
     
     def alterarPreco(self, new_preco):
         if new_preco >= 0:
@@ -85,10 +96,10 @@ class Produto:
 
     def verifEstoque(self):
         if self.estoque < self.estqIdeal:
-            return Cor.vermelho+"Estoque menor que o ideal. Realizar pedido!"+Cor.padrao
+            return Cor.vermelho+f"Estoque de {self.nome} menor que o ideal. Realizar pedido!"+Cor.padrao
         else:
-            return Cor.verde+"Estoque dentro do ideal!"+Cor.padrao
-
+            return ""
+        #Cor.verde+"Estoque dentro do ideal!"+Cor.padrao
 
 class Item:
     def __init__(self, produto, qtd):
@@ -115,7 +126,6 @@ class Item:
             print("Quantidade inválida")
         else: 
             self.qtd = new_qtd
-
 
 def cadastraProd():
     nome = input("Insira o nome do Produto: ")
