@@ -7,7 +7,7 @@ class App():
 
         self.janela = janela
         self.janela.title("Sistema de Vendas")
-        self.janela.geometry("800x600")
+        self.janela.geometry("1200x900")
         self.janela.config(bg="#507C60")
 
         self.container = tk.Frame(self.janela, background="#507C60")
