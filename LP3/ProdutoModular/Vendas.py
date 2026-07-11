@@ -20,20 +20,16 @@ class Venda:
         self.num = num
         self.itens = []
 
-    def inserir_item(self, item, logs):
+    def inserir_item(self, item):
         self.itens.append(item)
-        addLog(f"Item {item.produto.nome} adicionado à venda {self.num}", logs)
-        addLog(item.produto.verifEstoque(), logs)
 
-    def excluir_item(self, codigo, logs):
+    def excluir_item(self, codigo):
         for item in self.itens:
 
             if item.produto.codigo == codigo:
 
                 item.produto.novoEstoque(item.produto.estoque + item.qtd)
                 self.itens.remove(item)
-                addLog(f"Item {item.produto.nome} removido da venda {self.num}", logs)
-                addLog(item.produto.verifEstoque(), logs)
                 
                 return
 

@@ -1,0 +1,383 @@
+#INTEFACE
+import tkinter as tk
+from ..ProdutoModular.Item import *
+from ..ProdutoModular.Vendas import *
+from ..ProdutoModular.Produtos import *
+
+class TelaPrincipal(tk.Frame):
+    def __init__(self, master):
+        super().__init__(master, bg="#507C60")
+        self.pack(fill="both", expand=True)
+
+        self.vendas = Venda(1)
+        self.prods = []
+
+        
+        self.framePrincipal = tk.Frame(self, bg="white", bd=3, relief="solid")
+        self.framePrincipal.pack(fill="both", expand=True, padx=10, pady=10)
+
+
+        self.framePrincipal.grid_columnconfigure(0, weight=4)
+        self.framePrincipal.grid_columnconfigure(1, weight=1)
+        self.framePrincipal.grid_columnconfigure(2, weight=4)
+
+        self.framePrincipal.grid_rowconfigure(1, weight=1)
+
+        nomeMercado = tk.Label(
+            self.framePrincipal,
+            text="Nome do mercado",
+            bg="white",
+            font=("Arial", 22)
+        )
+        nomeMercado.grid(row=0, column=1, pady=15)
+        
+
+        frameProdutos = tk.LabelFrame(
+            self.framePrincipal,
+            text="Produtos Disponíveis",
+            bg="white",
+            font=("Arial", 14)
+        )
+        frameProdutos.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+
+        frameProdutos.grid_rowconfigure(0, weight=1)
+        frameProdutos.grid_columnconfigure(0, weight=1)
+
+        self.listaProdutos = tk.Listbox(frameProdutos)
+        self.listaProdutos.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+
+        '''
+        for i in range(20):
+            self.listaProdutos.insert(tk.END, f"Produto {i+1}")
+        '''
+
+        frameBotoes = tk.Frame(self.framePrincipal, bg="white")
+        frameBotoes.grid(row=1, column=1, padx=15)
+
+        tk.Button(frameBotoes, text="Adicionar produto", width=20, font=("arial", 16)).pack(pady=8)
+        tk.Button(frameBotoes, text="Remover Produto", width=20, font=("arial", 16)).pack(pady=8)
+        tk.Button(frameBotoes, text="Finalizar Venda", width=20, font=("arial", 16)).pack(pady=8)
+        tk.Button(frameBotoes, text="Histórico", width=20, font=("arial", 16)).pack(pady=8)
+
+
+
+        frameVenda = tk.LabelFrame(
+            self.framePrincipal,
+            text="Venda",
+            bg="white",
+            font=("Arial", 14)
+        )
+        frameVenda.grid(row=0, column=2, rowspan=3,
+                             padx=10, pady=10, sticky="nsew")
+
+        frameVenda.grid_rowconfigure(0, weight=1)
+        frameVenda.grid_columnconfigure(0, weight=1)
+
+        self.listaVenda = tk.Listbox(frameVenda)
+        self.listaVenda.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+
+        rotuloTotal = tk.Label(
+            frameVenda,
+            text="Total a pagar: R$ 0,00",
+            bg="white",
+            font=("Arial", 12),
+            anchor="w"
+        )
+        rotuloTotal.grid(row=1, column=0, padx=5, pady=5)
+
+
+        frameItens = tk.Frame(self.framePrincipal, bg="white")
+        frameItens.grid(row=2, column=0, columnspan=2,
+                                padx=10, pady=10, sticky="nsew")
+
+        frameItens.grid_columnconfigure(0, weight=2)
+        frameItens.grid_columnconfigure(1, weight=1)
+
+
+        frameAdicionar = tk.LabelFrame(
+            frameItens,
+            text="ADICIONAR ITEM À VENDA",
+            bg="white",
+            font=("Arial", 12, "bold")
+        )
+        frameAdicionar.grid(row=0, column=0, padx=(0,10), sticky="nsew")
+
+        tk.Label(frameAdicionar, text="Código", bg="white").pack(padx=10, pady=(10,0))
+        self.leCodigo = tk.Entry(frameAdicionar)
+        self.leCodigo.pack(fill="x", padx=10)
+
+        tk.Label(frameAdicionar, text="Quantidade", bg="white").pack(padx=10, pady=(10,0))
+        self.leQtd = tk.Entry(frameAdicionar)
+        self.leQtd.pack(fill="x", padx=10)
+
+        tk.Button(
+            frameAdicionar,
+            text="Adicionar item", font=("arial", 14)
+        ).pack(pady=10)
+
+
+
+        frameRemover = tk.LabelFrame(
+            frameItens,
+            text="REMOVER ITEM DA VENDA",
+            bg="white",
+            font=("Arial", 12)
+        )
+        frameRemover.grid(row=0, column=1, sticky="nsew")
+
+        tk.Label(frameRemover, text="Código", bg="white").pack(anchor="w", padx=10, pady=(10,0))
+        self.codigoRemover = tk.Entry(frameRemover)
+        self.codigoRemover.pack(fill="x", padx=10)
+
+        tk.Button(
+            frameRemover,
+            text="Remover item", font=("arial", 14)
+        ).pack(pady=10)
+
+    def addItem(self):
+        codigoAdd = self.leCodigo.get()
+        self.leCodigo.delete(0, tk.END)
+        qtdItem = self.leQtd.get()
+        self.leQtd.delete(0, tk.END)
+
+        for prod in self.produtos:
+            if codigoAdd == prod.codigo:
+                item = Item(prod, qtdItem)
+                self.vendas.inserir_item(item)
+                self.listaVenda.insert()
+                break
+        else:
+            print("Produto n encontrado")
+
+
+        
+
+
+
+
+janela = tk.Tk()
+janela.title("Sistema de Vendas")
+janela.geometry("1200x700")
+janela.configure(bg="#507C60")
+
+TelaPrincipal(janela)
+
+janela.mainloop()
+
+#MAIN
+from Vendas import *
+from Item import *
+from Produtos import *
+from Utils import *
+
+def main():
+    limpaTela()
+    logs=[]
+    produtos, venda1 = iniTeste(logs)
+
+    while True:
+
+        print("="*20 + "MENU" + "="*20)
+        print("1- Listar Produtos",
+              "2- Listar Venda",
+              "3- Adicionar Item",
+              "4- Remover Item",
+              "5- Imprimir relatório",
+              "6- Encerrar venda", sep="\n")
+        print("="*44)
+
+        opcao = input("  Selecione a sua opção: ")
+
+        limpaTela()
+        
+        match opcao:
+            case "1":
+                print("=============Produtos============")
+                for prod in produtos:
+                    print("-"*40)
+                    print(prod.printProd())
+                print("=================================")
+                
+            case "2":
+                venda1.print_venda()
+
+            case "3":
+
+                print("=============Produtos============")
+                for prod in produtos:
+                    print("-"*40)
+                    print(prod.printProd())
+                print("=================================")
+
+                codigoAdd = int(input("Insira o codigo do produto: "))
+                
+                for prod in produtos:
+
+                    if codigoAdd == prod.codigo:
+                        qtdAdd = int(input("Insira a quantidade do produto: "))
+                        venda1.inserir_item(Item(prod, qtdAdd), logs)
+                        print("Item inserido!")
+                        break
+                else:
+                    print("Produto não encontrado no estoque!")
+                
+            case "4":
+                venda1.print_venda()
+                codigoRemove = int(input("Insira o código do produto a ser removido: "))
+
+                for item in venda1.itens:
+                    if codigoRemove == item.produto.codigo:
+                        venda1.excluir_item(codigoRemove, logs)
+                        print("Item Removido!")
+                        break
+                else:
+                    print("Produto não encontrado na venda!")
+
+            case "5":
+                addLog(f"Valor total da venda {venda1.num}: {venda1.calc_total()}", logs)
+                relatorio(logs)
+
+            case "6":
+                print("Encerrando programa!")
+                break
+
+            case _:
+                print("Opção inválida!")
+        print()
+
+
+main()
+
+#PRODUTOS
+from Cor import *
+
+class Produto:
+    def __init__(self, nome, preco, codigo, estqIdeal, estoque=0):
+        self.nome = nome
+        self.preco = preco
+        self.codigo = codigo
+        self.estoque = estoque
+        self.estqIdeal = estqIdeal
+
+    def printProd(self):
+        return(f"|Produto: {self.nome:<10}Preço: {self.preco}\n"+
+               f"|Código: {self.codigo:<11}Estoque Atual: {self.estoque}")
+    
+    def alterarPreco(self, new_preco):
+        if new_preco >= 0:
+            self.preco = new_preco
+        else: 
+            print("Novo preco Inválido")
+
+    def alterar_nome(self, new_nome):
+        self.nome = new_nome
+
+    def novoEstoque(self, new_estoque):
+        if new_estoque > 0:
+            self.estoque = new_estoque
+        else: 
+            print("Erro! Estoque novo inválido!")
+
+    def verifEstoque(self):
+        if self.estoque < self.estqIdeal:
+            return Cor.vermelho+f"Estoque de {self.nome} menor que o ideal. Realizar pedido!"+Cor.padrao
+        else:
+            return ""
+        #Cor.verde+"Estoque dentro do ideal!"+Cor.padrao
+        
+
+def cadastraProd():
+    nome = input("Insira o nome do Produto: ")
+    preco = float(input("Insira o preço do produto: "))
+    codigo = int(input("Insira o código do produto: "))
+    estoqueIni = int(input("Insira o estoque inicial: "))
+    estoqueIdeal = int(input("Insira o estoque ideal para o produto: "))
+
+    return Produto(nome, preco, codigo, estoqueIdeal, estoqueIni)
+
+#ITEM
+from Cor import *
+
+class Item:
+    def __init__(self, produto, qtd):
+        self.produto = produto
+        self.qtd = qtd
+        self.alteraEstoque(qtd)
+
+    def alteraEstoque(self, qtd):
+        if qtd > 0:
+            novo = self.produto.estoque - qtd
+            self.produto.novoEstoque(novo)
+        else: 
+            print("Compra inválida! Não há estoque suficiente")
+
+    def printItem(self):
+        return (f"{self.produto.printProd()}\n|Quantidade: {self.qtd}\n"+
+                f"|Subtotal: " + Cor.verde + f"{self.subtotal():.2f}" + Cor.padrao)
+
+    def subtotal(self):
+        return (self.qtd * self.produto.preco)
+    
+    def alterar_qtd(self, new_qtd):
+        if new_qtd < 0:
+            print("Quantidade inválida")
+        else: 
+            self.qtd = new_qtd
+    
+
+#VENDAS
+from Cor import *
+
+def relatorio(logs):
+    
+    print("="*16 + "RELATÓRIO" + "="*15)
+    for msg in logs:
+        print(f"|{msg}")
+    print("="*44)
+
+def addLog(msg, logs):
+    if msg == "":
+        return
+    logs.append(msg)
+
+def clearLog(logs):
+    logs=[]
+
+class Venda:
+    def __init__(self, num):
+        self.num = num
+        self.itens = []
+
+    def inserir_item(self, item):
+        self.itens.append(item)
+
+    def excluir_item(self, codigo):
+        for item in self.itens:
+
+            if item.produto.codigo == codigo:
+
+                item.produto.novoEstoque(item.produto.estoque + item.qtd)
+                self.itens.remove(item)
+                
+                return
+
+        print("ERRO: Item não existe na venda")
+
+    def calc_total(self):
+        soma=0
+        for item in self.itens:
+            soma += item.subtotal()
+        return round(soma, 2)
+
+    def print_venda(self):
+        print(Cor.ciano+"="*40+Cor.padrao)
+        print(Cor.negrito+f"Venda n° {self.num}")
+        print(Cor.ciano+"="*40+Cor.padrao)
+
+        for item in self.itens:
+            print("-"*30)
+            print(f"{item.printItem()}")
+            print("-"*30)
+
+        print(Cor.azul_neg+f"TOTAL: {self.calc_total()}"+Cor.padrao)
+        print(Cor.ciano+"="*40+Cor.padrao)

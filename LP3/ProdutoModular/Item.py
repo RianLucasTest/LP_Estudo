@@ -25,3 +25,4 @@ class Item:
             print("Quantidade inválida")
         else: 
             self.qtd = new_qtd
+    

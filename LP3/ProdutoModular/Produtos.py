@@ -33,6 +33,7 @@ class Produto:
         else:
             return ""
         #Cor.verde+"Estoque dentro do ideal!"+Cor.padrao
+        
 
 def cadastraProd():
     nome = input("Insira o nome do Produto: ")
